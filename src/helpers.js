@@ -5,7 +5,7 @@ import {
 } from "./labels";
 
 import { parse as prs } from "acorn";
-import { full } from "acorn/dist/walk";
+import { full } from "acorn-walk";
 import { generate as gen } from "astring";
 
 export function getInheritanceTree(cls) {
@@ -292,7 +292,7 @@ export function deepMagicPatch(node) {
 };
 
 export function parse() {
-  return prs.apply(null, arguments);
+  return prs(...arguments, { allowAwaitOutsideFunction: true, sourceType:"module", ecmaVersion: 2020 });
 };
 
 export function generate() {

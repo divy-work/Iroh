@@ -3,7 +3,7 @@ import { uid } from "../utils";
 import { INSTR } from "../labels";
 import { CLEAN_DEBUG_INJECTION } from "../cfg";
 
-import { base, recursive } from "acorn/dist/walk";
+import { base, recursive } from "acorn-walk";
 
 import Scope from "../scope";
 
