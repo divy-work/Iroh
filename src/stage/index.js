@@ -340,7 +340,7 @@ Stage.prototype.getFrameByHashFrom = function(frm, hash) {
 
 Stage.prototype.patch = function(input) {
   let patcher = new Patcher(this);
-  let ast = parse(input, { locations: true });
+  let ast = parse(input, { sourceType: "module", allowImportExportEverywhere: true, allowAwaitOutsideFunction: true, ecmaVersion: 2020, locations: true, plugins: ["estree"] });
   this.frame = new Frame(INSTR.PROGRAM, this.$$frameHash);
   patcher.applyPatches(ast);
   // link walk things to stage

@@ -6518,10 +6518,7 @@ var iroh = (function () {
     return ubidx++;
   }
   function parse$1() {
-    var i = arguments.length, argsArray = Array(i);
-    while ( i-- ) argsArray[i] = arguments[i];
-
-    return parse.apply(void 0, argsArray.concat( [{allowAwaitOutsideFunction: true, sourceType:"module", ecmaVersion: 2020}] ));
+    return parse.apply(void 0, arguments);
   }
   function generate$1() {
     return generate.apply(null, arguments);
@@ -9414,12 +9411,14 @@ var iroh = (function () {
     } else {
       root = object;
       proto = null;
-    }  name = root.name;
+    }  name = root ? root.name : null;
 
     var node = this.nodes[hash].node;
+    var isSloppy = false;
     // external functions are traced as sloppy
-    var isSloppy = this.symbols[name] === void 0;
-
+    if(name) {
+      isSloppy = this.symbols[name] === void 0;
+    }
     node.isSloppy = isSloppy;
 
     // API
@@ -9442,7 +9441,7 @@ var iroh = (function () {
     this.$$frameHash = Math.abs(hash);
     // FRAME END
 
-    this.indent += INDENT_FACTOR; 
+    this.indent += INDENT_FACTOR;
     // evaluate function bully protected
     try {
       value = before.call.apply(before.object, before.arguments);
@@ -10292,7 +10291,7 @@ var iroh = (function () {
 
   Stage.prototype.patch = function(input) {
     var patcher = new Patcher(this);
-    var ast = parse$2(input, { locations: true });
+    var ast = parse$2(input, { sourceType: "module", allowImportExportEverywhere: true, allowAwaitOutsideFunction: true, ecmaVersion: 2020, locations: true, plugins: ["estree"] });
     this.frame = new Frame(INSTR.PROGRAM, this.$$frameHash);
     patcher.applyPatches(ast);
     // link walk things to stage

@@ -267,12 +267,14 @@ export function DEBUG_FUNCTION_CALL(hash, ctx, object, call, args) {
     root = object;
     proto = null;
   };
-  name = root.name;
+  name = root ? root.name : null;
 
   let node = this.nodes[hash].node;
+  let isSloppy = false;
   // external functions are traced as sloppy
-  let isSloppy = this.symbols[name] === void 0;
-
+  if(name) {
+    isSloppy = this.symbols[name] === void 0;
+  }
   node.isSloppy = isSloppy;
 
   // API
@@ -295,7 +297,7 @@ export function DEBUG_FUNCTION_CALL(hash, ctx, object, call, args) {
   this.$$frameHash = Math.abs(hash);
   // FRAME END
 
-  this.indent += INDENT_FACTOR; 
+  this.indent += INDENT_FACTOR;
   // evaluate function bully protected
   try {
     value = before.call.apply(before.object, before.arguments);

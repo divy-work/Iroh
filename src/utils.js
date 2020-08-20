@@ -24,7 +24,7 @@ export function uBranchHash() {
 };
 
 export function parse() {
-  return prs(...arguments, {allowAwaitOutsideFunction: true, sourceType:"module", ecmaVersion: 2020});
+  return prs(...arguments);
 };
 
 export function generate() {

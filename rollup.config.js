@@ -6,7 +6,6 @@ import commonjs from "@rollup/plugin-commonjs";
 
 var config = {
   input: "src/index.js",
-  moduleName: "iroh",
 }
 config.output = { name: "iroh", format: 'iife', file: 'dist/browser.js', paths: {
   "acorn/dist/walk": "acorn/dist/walk"
@@ -14,7 +13,7 @@ config.output = { name: "iroh", format: 'iife', file: 'dist/browser.js', paths: 
 config.external = []
 config.plugins = [
   json(),
-  buble(),
+  buble({ transforms: { dangerousForOf: true } }),
   resolve({
     browser: true,
     jsnext: true,
